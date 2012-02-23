@@ -1,14 +1,17 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package world;
 
-/**
- *
- * @author Taavi
- */
-public class WorldObjectFactory {
+public abstract class WorldObjectFactory {
+    
+    private WorldObjectFactory() {}; // no constructor. ever. 
+    
+    public PlanetTemplate createNewPlanet() {
+        //TODO
+        
+        PlanetTemplate template = new PlanetTemplate();
+        
+        
+        return template; 
+    }        
 
 }
