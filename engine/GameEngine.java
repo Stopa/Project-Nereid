@@ -1,7 +1,7 @@
 
 package engine;
 
-public abstract class Engine {
+public abstract class GameEngine {
         
     //private static UserInterface UserInterface; 
     //private static World World; 
