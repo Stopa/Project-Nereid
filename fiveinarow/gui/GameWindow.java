@@ -1,12 +1,23 @@
 package fiveinarow.gui;
 
 import javax.swing.JFrame; 
+import javax.swing.JLabel;
+import javax.swing.JButton; 
 
 import fiveinarow.Configuration; 
+import java.awt.Color;
+
+import java.awt.Font;
 
 public class GameWindow extends JFrame {
     
     private GamePanel gamePanel;
+    
+    //private JLabel playerOneWinsLabel;
+    //private JLabel playerTwoWinsLabel; 
+    private JLabel statusLabel; 
+    
+    //private JButton newGameButton; 
     
     
     public GameWindow() {
@@ -24,12 +35,48 @@ public class GameWindow extends JFrame {
                             Configuration.GAMEPANEL_POSY,
                             Configuration.GAMEPANEL_WIDTH,
                             Configuration.GAMEPANEL_HEIGHT);         
-        gamePanel.setUpGridButtons();       
+        gamePanel.setUpGridButtons();    
         
-        this.setTitle("TODO!!!");
+        /*
+        playerOneWinsLabel = new JLabel();
+        playerOneWinsLabel.setBounds(WIDTH, WIDTH, WIDTH, WIDTH);
+        playerOneWinsLabel.setForeground(Color.red); //TODO
+        updatePlayerOneWins();
+        
+        playerTwoWinsLabel = new JLabel(); 
+        playerTwoWinsLabel.setBounds(WIDTH, WIDTH, WIDTH, WIDTH); 
+        playerTwoWinsLabel.setForeground(Color.red); //TODO        
+        updatePlayerTwoWins(); 
+         * 
+         */
+        
+        statusLabel = new JLabel();
+        statusLabel.setBounds(Configuration.STATUSLABEL_POSX,
+                              Configuration.STATUSLABEL_POSY,
+                              Configuration.STATUSLABEL_WIDTH,
+                              Configuration.STATUSLABEL_HEIGHT);        
+        statusLabel.setForeground(Configuration.STATUSLABEL_COLOR); 
+        statusLabel.setFont(new Font("SansSerif", Font.BOLD, 50)); //TODO - võlunumber, võta ära!
+        this.add(statusLabel); 
+        
+                        
+        
+        this.setTitle("Five in a row!"); 
 
         setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
     } 
+    
+    public final void updatePlayerOneWins() {
+        //TODO
+    }
+    
+    public final void updatePlayerTwoWins() {
+        //TODO 
+    }
+    
+    public final void updateStatusLabel(String text) {
+        statusLabel.setText(text); 
+    }
     
     
      

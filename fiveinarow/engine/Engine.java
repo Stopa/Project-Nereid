@@ -13,13 +13,18 @@ public abstract class Engine {
     private static Board board; 
     private static GameWindow gameWindow; 
     
-    private static Player currentPlayer; 
+    private static Player currentPlayer;     
+    
+    private static boolean activeWin; //TODO - MUUDA SEDA HÄKKI!!
     
     
     public static void turn() {       
         
         currentPlayer = currentPlayer == Player.PLAYER_ONE ? 
                 Player.PLAYER_TWO : Player.PLAYER_ONE;
+        
+        if (!activeWin)
+        gameWindow.updateStatusLabel(currentPlayer.toString() + " käik!");
         
     }
     
@@ -80,6 +85,8 @@ public abstract class Engine {
     
     public static void handleClick(int xcoord, int ycoord) {
         
+        if (activeWin) return; 
+        
         gameWindow.setEnabled(false); 
         
         Square square = board.getSquareAt(xcoord, ycoord); 
@@ -87,10 +94,12 @@ public abstract class Engine {
         if (checkMove(square)) {            
             takeSquare(square);
             turn(); 
+
         }
         else {
             //TODO - anything? 
-        }        
+        } 
+            
         gameWindow.setEnabled(true); 
     }      
     
@@ -119,7 +128,9 @@ public abstract class Engine {
         gameWindow.updateGridAt(square.getXCoord(), square.getYCoord());
         
         if (checkWin(square)) {
-            System.out.println(currentPlayer.toString() + " wins!"); 
+            gameWindow.updateStatusLabel(currentPlayer.toString() + " võit!");
+            gameWindow.setEnabled(false); //TODO - muuta    
+            activeWin = true; 
         }
     }
     
@@ -128,6 +139,7 @@ public abstract class Engine {
         playerOneWins = 0;
         playerTwoWins = 0; 
         currentPlayer = Player.PLAYER_ONE; 
+        activeWin = false; 
     }
         
     
@@ -140,9 +152,27 @@ public abstract class Engine {
         gameWindow.setVisible(true);
     }
     
-    public static void startGame() {
-        //TODO
+    public static void startNewGame() {   
+        if (gameWindow != null) {
+        //praegune gamewindow dev/null
+        gameWindow.setVisible(false);
+        gameWindow.dispose(); 
+        gameWindow = null; 
+        }
+        
+        if (board != null) {
+        //praegune board dev/null
+        board = null; 
+        }
+        
+        //uus board
+        setUpBoard(); 
+        //uus gamewindow
+        setUpGameWindow(); 
+        gameWindow.updateStatusLabel(currentPlayer.toString() + " käik!");
+        //set visible
     }   
+    
     
     public static void endGame(Player winner) {
         //TODO - kumb võitis? sellele liita.. 
@@ -164,6 +194,14 @@ public abstract class Engine {
     
     public static GameWindow getGameWindow() {
         return gameWindow; 
+    }
+    
+    public static int getPlayerOneWins() {
+        return playerOneWins; 
+    }
+    
+    public static int getPlayerTwoWins() {
+        return playerTwoWins; 
     }
     
     public enum Player {
