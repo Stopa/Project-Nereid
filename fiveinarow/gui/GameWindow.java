@@ -28,7 +28,13 @@ public class GameWindow extends JFrame {
         
         this.setTitle("TODO!!!");
 
-        
+        setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+    }
+    
+    
+    
+    public void updateGridAt(int xcoord, int ycoord) {
+        gamePanel.getGridAt(xcoord, ycoord).repaint();
     }
     
 

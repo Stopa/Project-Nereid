@@ -1,5 +1,9 @@
 package fiveinarow.engine;
 
+import java.awt.Color; 
+
+import fiveinarow.Configuration; 
+
 public class Square {
     
     private final int xcoord;
@@ -35,26 +39,23 @@ public class Square {
     }
     
     
-    public void handleClick() {
-        //TODO - disable the game window!!!!!
-        
-        if (Engine.checkMove(this)) {            
-            //TODO - disable this button? 
-            Engine.takeSquare(this);
-            Engine.turn(); 
-        }
-        else {
-            //TODO - anything? 
-        }
-        
-        //TODO - enable the game window 
-    }    
     
     
     
     public enum SquareState {
-        PLAYER_ONE, PLAYER_TWO, UNSELECTED; 
-        //TODO
+        PLAYER_ONE(Configuration.PLAYER_ONE_COLOR), 
+        PLAYER_TWO(Configuration.PLAYER_TWO_COLOR), 
+        UNSELECTED(Configuration.UNSELECTED_COLOR);         
+        
+        private final Color color; 
+        
+        SquareState(Color color) {
+            this.color = color; 
+        }
+        
+        public Color getColor() {
+            return this.color; 
+        }
     }
 
 }

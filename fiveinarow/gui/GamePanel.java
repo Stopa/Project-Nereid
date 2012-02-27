@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import fiveinarow.Configuration;
 
 public class GamePanel extends JPanel {
+    
+    private GridButton[][] gridButtons; 
         
     public GamePanel() {
         //TODO
@@ -13,17 +15,26 @@ public class GamePanel extends JPanel {
                                       0, 
                                       0)); 
         //TODO - layout vaja settida.. 
+                
 
     }
     
     void setUpGridButtons() {
+        
+        gridButtons = new GridButton[Configuration.BOARDSIZE][Configuration.BOARDSIZE]; 
+        
         for (int i = 0; i < Configuration.BOARDSIZE; i++) {
             for (int j = 0; j < Configuration.BOARDSIZE; j++) {
-                //TODO
-                this.add(new GridButton(i, j));                
+                GridButton tmp = new GridButton(i, j);
+                gridButtons[i][j] = tmp;                 
+                this.add(tmp); 
             }
         }
         
+    }
+    
+    GridButton getGridAt(int xcoord, int ycoord) {
+        return gridButtons[xcoord][ycoord]; 
     }
 
 }

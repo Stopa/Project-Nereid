@@ -1,5 +1,6 @@
-
 package fiveinarow;
+
+import java.awt.Color; 
 
 public abstract class Configuration {
     
@@ -14,5 +15,8 @@ public abstract class Configuration {
     public static final int GAMEPANEL_WIDTH = 600; 
     public static final int GAMEPANEL_POSX = 100; 
     public static final int GAMEPANEL_POSY = 100; 
-
+    
+    public static final Color PLAYER_ONE_COLOR = Color.RED; 
+    public static final Color PLAYER_TWO_COLOR = Color.BLUE; 
+    public static final Color UNSELECTED_COLOR = Color.WHITE; 
 }
