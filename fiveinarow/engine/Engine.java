@@ -1,34 +1,46 @@
 package fiveinarow.engine;
 
-import fiveinarow.gui.*; 
+import fiveinarow.gui.GameWindow; 
 
 public abstract class Engine {
     
-    private Engine() {}; //no constructor
+    private Engine() {}; //no constructor   
     
-    private static int totalMoves; 
-    private static int playerOneWins;
-    private static int playerTwoWins; 
+    private static int totalMoves; //tehtud käikude arv selle mängu jooksul
+    private static int playerOneWins; //esimese mängija võitude arv mängukorra jooksul
+    private static int playerTwoWins; //teise mängija võitude arv mängukorra jooksul
     
-    private static Board board; 
-    private static GameWindow gameWindow; 
+    private static Board board; //board objekt - loogiline mängulaud
+    private static GameWindow gameWindow; //mänguaken ehk graafiline mängulaud
     
-    private static Player currentPlayer;     
+    private static Player currentPlayer; //mängija, kelle käik parasjagu on
     
-    private static boolean activeWin; //TODO - MUUDA SEDA HÄKKI!!
+    private static boolean activeWin; //kas parasjagu on üks mängija võitnud
+    //kasutatakse mitmes kohas mängu flow juhtimisel
+    //TODO - mõelda parem lahendus välja? 
     
     
-    public static void turn() {       
+    /**
+     * Handles player switching and pushes new status string to game window. 
+     */
+    private static void turn() {       
         
+        //muudab mängijat
         currentPlayer = currentPlayer == Player.PLAYER_ONE ? 
                 Player.PLAYER_TWO : Player.PLAYER_ONE;
         
+        //kui pole ühe mängija võit aktiivne, siis pushitakse uus staatus
         if (!activeWin)
         gameWindow.updateStatusLabel(currentPlayer.toString() + " käik!");
         
     }
     
-    public static boolean checkWin(Square square) {
+    /**
+     * 
+     * @param square
+     * @return 
+     */
+    private static boolean checkWin(Square square) {
         //TODO
         //kontrollida AINULT seda ruutu
         //eeldusel et teised ju pole muutunud.. 
@@ -59,6 +71,14 @@ public abstract class Engine {
        
     }
     
+    /**
+     * 
+     * @param xcoord
+     * @param ycoord
+     * @param xchange
+     * @param ychange
+     * @return 
+     */
     private static int getDirectionCount(int xcoord, int ycoord, int xchange, int ychange) {
         
         try {
@@ -83,6 +103,12 @@ public abstract class Engine {
                 
     }
     
+    /**
+     * 
+     * @param xcoord
+     * @param ycoord 
+     */
+    
     public static void handleClick(int xcoord, int ycoord) {
         
         if (activeWin) return; 
@@ -103,6 +129,11 @@ public abstract class Engine {
         gameWindow.setEnabled(true); 
     }      
     
+    /**
+     * 
+     * @param square
+     * @return 
+     */
     public static boolean checkMove(Square square) {
         
         if (totalMoves == 0) return true; 
@@ -115,11 +146,20 @@ public abstract class Engine {
         return false;  
     }
     
+    /**
+     * 
+     * @param square
+     * @return 
+     */
     private static boolean hasAdjacentSelectedSquares(Square square) {
         //TODO!!
         return true; 
     }
     
+    /**
+     * 
+     * @param square 
+     */
     public static void takeSquare(Square square) {
         
         square.setState(currentPlayer.getCorrespondingSquareState()); 
@@ -134,6 +174,9 @@ public abstract class Engine {
         }
     }
     
+    /**
+     * 
+     */
     public static void init() {
         totalMoves = 0; 
         playerOneWins = 0;
@@ -142,15 +185,24 @@ public abstract class Engine {
         activeWin = false; 
     }
         
-    
-    public static void setUpBoard() {
+    /**
+     * 
+     */
+    private static void setUpBoard() {
         board = new Board();
     }
     
-    public static void setUpGameWindow() {
+    /**
+     * 
+     */
+    private static void setUpGameWindow() {
         gameWindow = new GameWindow(); 
         gameWindow.setVisible(true);
     }
+    
+    /**
+     * Disposes of the current game window and board objects and creates new ones. 
+     */
     
     public static void startNewGame() {   
         if (gameWindow != null) {
@@ -173,6 +225,10 @@ public abstract class Engine {
         //set visible
     }   
     
+    /**
+     * CURRENTLY UNUSED.  
+     * @param winner 
+     */
     
     public static void endGame(Player winner) {
         //TODO - kumb võitis? sellele liita.. 
@@ -188,22 +244,41 @@ public abstract class Engine {
         }
     }
     
+    /**
+     * 
+     * @return 
+     */
     public static Board getBoard() {
         return board; 
     }
     
+    /**
+     * 
+     * @return 
+     */
     public static GameWindow getGameWindow() {
         return gameWindow; 
     }
     
+    /**
+     * 
+     * @return 
+     */
     public static int getPlayerOneWins() {
         return playerOneWins; 
     }
     
+    /**
+     * 
+     * @return
+     */
     public static int getPlayerTwoWins() {
         return playerTwoWins; 
     }
     
+    /**
+     * 
+     */
     public enum Player {
         PLAYER_ONE(Square.SquareState.PLAYER_ONE, "Punane"), 
         PLAYER_TWO(Square.SquareState.PLAYER_TWO, "Sinine"); 
@@ -211,15 +286,28 @@ public abstract class Engine {
         private Square.SquareState state; 
         private String name; 
         
+        /**
+         * 
+         * @param state
+         * @param name 
+         */
         Player(Square.SquareState state, String name) {
             this.state = state; 
             this.name = name; 
         }
         
+        /**
+         * 
+         * @return 
+         */
         public Square.SquareState getCorrespondingSquareState() {
             return this.state; 
         }
         
+        /**
+         * 
+         * @return 
+         */
         public String toString() {
             return this.name; 
         }

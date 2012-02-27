@@ -24,6 +24,9 @@ public class GridButton extends JButton implements ActionListener {
     }    
     
     @Override
+    /**
+     * 
+     */
     public void repaint() {    
         this.setBackground(Engine.getBoard().getSquareAt(xcoord, ycoord).getState().getColor());
         super.repaint(); 

@@ -19,7 +19,9 @@ public class GameWindow extends JFrame {
     
     //private JButton newGameButton; 
     
-    
+    /**
+     * 
+     */
     public GameWindow() {
         //TODO
         
@@ -66,20 +68,34 @@ public class GameWindow extends JFrame {
         setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
     } 
     
+    /**
+     * CURRENTLY UNUSED. 
+     */
     public final void updatePlayerOneWins() {
         //TODO
     }
     
+    /**
+     * CURRENTLY UNUSED. 
+     */
     public final void updatePlayerTwoWins() {
         //TODO 
     }
     
+    /**
+     * 
+     * @param text 
+     */
     public final void updateStatusLabel(String text) {
         statusLabel.setText(text); 
     }
     
     
-     
+    /**
+     * 
+     * @param xcoord
+     * @param ycoord 
+     */
     public void updateGridAt(int xcoord, int ycoord) {
         gamePanel.getGridAt(xcoord, ycoord).repaint();
     }

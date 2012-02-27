@@ -8,6 +8,9 @@ public class GamePanel extends JPanel {
     
     private GridButton[][] gridButtons; 
         
+    /**
+     * 
+     */
     public GamePanel() {
         //TODO
         this.setLayout(new GridLayout(Configuration.BOARDSIZE, 
@@ -19,6 +22,9 @@ public class GamePanel extends JPanel {
 
     }
     
+    /**
+     * 
+     */
     void setUpGridButtons() {
         
         gridButtons = new GridButton[Configuration.BOARDSIZE][Configuration.BOARDSIZE]; 
@@ -33,6 +39,12 @@ public class GamePanel extends JPanel {
         
     }
     
+    /**
+     * 
+     * @param xcoord
+     * @param ycoord
+     * @return 
+     */
     GridButton getGridAt(int xcoord, int ycoord) {
         return gridButtons[xcoord][ycoord]; 
     }
