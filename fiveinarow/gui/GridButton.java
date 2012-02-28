@@ -7,28 +7,40 @@ import fiveinarow.engine.Engine;
 
 public class GridButton extends JButton implements ActionListener {
     
-    private final int xcoord;
-    private final int ycoord; 
+    private final int xcoord; //selle nupu x-koordinaat massiivis
+    private final int ycoord; //selle nupu y-koordinaat massiivis
     
-    public GridButton(int xcoord, int ycoord) {        
+    /**
+     * Constructs new GridButton instance. 
+     * 
+     * @param xcoord X-coordinate of the button. 
+     * @param ycoord Y-coordinate of the button. 
+     */
+    public GridButton(int xcoord, int ycoord) {  
+        //määrame väärtused
         this.xcoord = xcoord;
         this.ycoord = ycoord; 
-        addActionListener(this); 
+        addActionListener(this); //lisame ActionListener hiireklõpse jne kuulama 
     }
-                        
-    public void actionPerformed(ActionEvent e) {
-        //TODO - disable the game window!!!!!
-        Engine.handleClick(xcoord, ycoord); 
-        //TODO - enable the game window         
+       
+    /**
+     * ActionListener implementation. Handles clicking the grid buttons. 
+     * 
+     * @param e ActionEvent fired by clicking the button. 
+     */
+    @Override 
+    public void actionPerformed(ActionEvent e) {        
+        Engine.handleClick(xcoord, ycoord); //kutsume välja vastava Engine meetodi
     }    
     
-    @Override
     /**
-     * 
+     * Repaints the button. 
      */
-    public void repaint() {    
+    @Override   
+    public void repaint() { 
+        //määrame uue taustavärvi
         this.setBackground(Engine.getBoard().getSquareAt(xcoord, ycoord).getState().getColor());
-        super.repaint(); 
+        super.repaint(); //ja kutsume välja superklassi vastava meetodi 
     }
 
 }
