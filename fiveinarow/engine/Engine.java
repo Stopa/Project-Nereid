@@ -36,117 +36,130 @@ public abstract class Engine {
     }
     
     /**
+     * Checks whether the current square taking ended in the current player winning. 
      * 
-     * @param square
-     * @return 
+     * @param square The currently clicked square. 
+     * @return True - current player has won, false - game is not won yet. 
      */
-    private static boolean checkWin(Square square) {
-        //TODO
-        //kontrollida AINULT seda ruutu
-        //eeldusel et teised ju pole muutunud.. 
-        //rekursiivselt?  
+    private static boolean checkWin(Square square) {          
         
+        //4x4 massiiv
+        //hoiab suundi, mis suunas kontrollitakse rekursiivselt kõrvalolevaid ruute
+        //dirs[x][1|2|3|4], kus 1,2 ja 3,4 moodustavad suundade paarid, kus 
+        //esimene element liidetakse x-koordinaadile ja teine element y-koordinaadile
         int[][] dirs = {{-1,-1,1,1},{1,-1,-1,1},{0,-1,0,1},{-1,0,1,0}}; 
         
+        //loetavuse mõttes salvestame ruudu x ja y koordinaadid lokaalselt
         int currentX = square.getXCoord(); 
         int currentY = square.getYCoord(); 
         
+        
+        //proovime rekursiivselt läbi kõik 4 suundade paari
         for (int i = 0; i < dirs.length; i++) {
             
+            //kui 1 (praegune ruut) pluss ruudud esimeses suunas 
+            //plus ruudud teises suunas >= 5, on järelikult 5 ruutu reas 
             if (1 + 
+            //esimene suund
             getDirectionCount(currentX + dirs[i][0],
                               currentY + dirs[i][1], 
                               dirs[i][0], 
                               dirs[i][1]) +                   
+            //teine suund
             getDirectionCount(currentX + dirs[i][2], 
                               currentY + dirs[i][3], 
                               dirs[i][2], 
                               dirs[i][3]) 
-            >= 5) return true;                 
+            >= 5) return true; //5 ruutu reas, mäng võidetud        
         }
         
-        return false; 
-        
-        
-       
+        return false; //kõik variandid proovitud, polnud 5, mäng pole võidetud                      
     }
     
     /**
+     * Recursively gets the count of squares owned by the current player in this direction. 
      * 
-     * @param xcoord
-     * @param ycoord
-     * @param xchange
-     * @param ychange
-     * @return 
+     * @param xcoord X-coordinate of the square to be evaluated. 
+     * @param ycoord Y-coordinate of the square to be evaluated. 
+     * @param xchange Change in the x-direction of the next square to be evaluated. 
+     * @param ychange Change in the y-direction of the next square to be evaluated. 
+     * @return The number of player's squares in this direction. 
      */
     private static int getDirectionCount(int xcoord, int ycoord, int xchange, int ychange) {
         
-        try {
-        
-        if (board.getSquareAt(xcoord, ycoord).getState() == 
-                currentPlayer.getCorrespondingSquareState()) {
-                    return 1 + getDirectionCount(xcoord + xchange,
-                                                 ycoord + ychange,
-                                                 xchange,
+        try {        
+            if (board.getSquareAt(xcoord, ycoord).getState() == //uuritav ruut
+                currentPlayer.getCorrespondingSquareState()) { //kuulub praegusele mängijale
+                    return 1 + getDirectionCount(xcoord + xchange, //tagastame 1 + rekursiivselt
+                                                 ycoord + ychange, //kutsume sama meetodi välja
+                                                 xchange,          //järgmisele ruudule
                                                  ychange);
             }
         
-        else return 0; 
-        
+        else return 0; //uuritav ruut ei kuulu mängijale, tagastame 0 
         }
         
-        //TODO - katseta kas see ikka toimib.. 
-        catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("debug - visati exception.."); 
+        //püüab kinni exceptioni, kui prooviti ruutu, mis asus väljaspool mängulauda.. 
+        catch (ArrayIndexOutOfBoundsException e) {           
             return 0; 
         }
                 
     }
     
     /**
+     * Handles the click on the grid button made in the graphical interface. 
      * 
-     * @param xcoord
-     * @param ycoord 
+     * @param xcoord X-coordinate of the clicked button. 
+     * @param ycoord Y-coordinate of the clicked button. 
      */
     
     public static void handleClick(int xcoord, int ycoord) {
         
-        if (activeWin) return; 
+        if (activeWin) return; //kui mäng juba läbi, siis ignoreerib
         
-        gameWindow.setEnabled(false); 
+        gameWindow.setEnabled(false); //protsessimise ajaks disableb mänguakna
         
-        Square square = board.getSquareAt(xcoord, ycoord); 
+        Square square = board.getSquareAt(xcoord, ycoord); //leiab viite loogilisele ruudule
         
-        if (checkMove(square)) {            
-            takeSquare(square);
-            turn(); 
+        if (checkMove(square)) { //kui saab võtta seda ruutu üldse
+            takeSquare(square); //praegune mängija võtab ruudu
+            turn();             //teeme käiku lõpetavad protsessid 
 
         }
         else {
-            //TODO - anything? 
+            //kui ei saa võtta, siis ignoreerime? 
+            //TODO - näidata mingit veateadet statusLabelil? 
         } 
             
-        gameWindow.setEnabled(true); 
+        gameWindow.setEnabled(true); //enableme uuesti mänguakna 
     }      
     
     /**
+     * Checks the legality of the attempted move. 
+     * CURRENTLY NOT IMPLEMENTED. 
      * 
-     * @param square
-     * @return 
+     * @param square The square to be checked. 
+     * @return True if move is legal, false if it is not. 
      */
-    public static boolean checkMove(Square square) {
+    private static boolean checkMove(Square square) {
         
-        if (totalMoves == 0) return true; 
+        if (totalMoves == 0) return true;  //kui esimene käik, võib igale poole käia
                         
+        //ülejäänut (hetkel) ignoreeritakse. 
+        /*
         if (square.getState() == Square.SquareState.UNSELECTED &&
                 hasAdjacentSelectedSquares(square)) return true;
         //TODO - ära muuta!! või panna konfist sõltuma?
         //et kas peab juba kõrval äravõetud ruut olema? 
                 
         return false;  
+         * 
+         */
+        return true; 
     }
     
     /**
+     * CURRENTLY UNUSED. 
      * 
      * @param square
      * @return 
@@ -157,47 +170,51 @@ public abstract class Engine {
     }
     
     /**
+     * Changes the square's owner to the current player. 
      * 
-     * @param square 
+     * @param square The square to be occupied. 
      */
-    public static void takeSquare(Square square) {
+    private static void takeSquare(Square square) {
         
-        square.setState(currentPlayer.getCorrespondingSquareState()); 
+        //paneb ruudu omanikuks (state'ks) praeguse mängija (state) 
+        square.setState(currentPlayer.getCorrespondingSquareState());
         
-        totalMoves++; 
+        totalMoves++; //lisame käikude arvule ühe
+        //pushime graafilkakomponenti uuenduse - äravõetud ruut uuendada
         gameWindow.updateGridAt(square.getXCoord(), square.getYCoord());
         
+        //kontrollime, kas see käik lõpetas mängu
         if (checkWin(square)) {
-            gameWindow.updateStatusLabel(currentPlayer.toString() + " võit!");
-            gameWindow.setEnabled(false); //TODO - muuta    
-            activeWin = true; 
+            //uuendame staatusteksti
+            gameWindow.updateStatusLabel(currentPlayer.toString() + " võit!");            
+            activeWin = true; //määrame muutujasse, et aktiivne mäng on läbi 
         }
     }
     
     /**
-     * 
+     * Performs Engine setup. 
      */
     public static void init() {
-        totalMoves = 0; 
-        playerOneWins = 0;
-        playerTwoWins = 0; 
-        currentPlayer = Player.PLAYER_ONE; 
-        activeWin = false; 
+        totalMoves = 0; //alguses tehtud 0 käiku
+        playerOneWins = 0; //POLE KASUTUSES - esimese mängija võidud
+        playerTwoWins = 0; //POLE KASUTUSES - teise mängija võidud
+        currentPlayer = Player.PLAYER_ONE; //praegune mängija - esimene mängija
+        activeWin = false; //aktiivne mäng ei ole läbi 
     }
         
     /**
-     * 
+     * Sets up logical board. 
      */
     private static void setUpBoard() {
-        board = new Board();
+        board = new Board(); //tekitame uue loogilise mängulaua
     }
     
     /**
-     * 
+     * Sets up graphical game window. 
      */
     private static void setUpGameWindow() {
-        gameWindow = new GameWindow(); 
-        gameWindow.setVisible(true);
+        gameWindow = new GameWindow(); //loome uue graafilise mängulaua 
+        gameWindow.setVisible(true); //paneme selle nähtavaks 
     }
     
     /**
@@ -205,24 +222,23 @@ public abstract class Engine {
      */
     
     public static void startNewGame() {   
-        if (gameWindow != null) {
-        //praegune gamewindow dev/null
-        gameWindow.setVisible(false);
-        gameWindow.dispose(); 
-        gameWindow = null; 
+        if (gameWindow != null) { //kui mänguaken eksisteerib        
+        gameWindow.setVisible(false); //teeme selle protsessimise ajaks nähtamatuks
+        gameWindow.dispose(); //kutsume välja dispose() meetodi, mis akna hävitab
+        gameWindow = null; //paneme mänguakna nulliks, et GC selle ära koristaks
         }
         
-        if (board != null) {
-        //praegune board dev/null
-        board = null; 
+        if (board != null) { //kui loogiline mängulaud eksisteerib        
+        board = null; //paneme selle nulli, et GC selle ära koristaks 
+        //TODO - kontrollida, et mäluleket poleks? 
         }
         
-        //uus board
+        //loome uue loogilise mängulaua
         setUpBoard(); 
-        //uus gamewindow
+        //loome uue graafilise mänguakna
         setUpGameWindow(); 
-        gameWindow.updateStatusLabel(currentPlayer.toString() + " käik!");
-        //set visible
+        //paneme staatustekstiks praeguse mängija käigu
+        gameWindow.updateStatusLabel(currentPlayer.toString() + " käik!");        
     }   
     
     /**
@@ -230,7 +246,7 @@ public abstract class Engine {
      * @param winner 
      */
     
-    public static void endGame(Player winner) {
+    private static void endGame(Player winner) {
         //TODO - kumb võitis? sellele liita.. 
         
         if (winner == Player.PLAYER_ONE) {
@@ -245,22 +261,25 @@ public abstract class Engine {
     }
     
     /**
+     * Returns board reference. 
      * 
-     * @return 
+     * @return Reference to board object. 
      */
     public static Board getBoard() {
         return board; 
     }
     
     /**
+     * Returns gamewindow reference. 
      * 
-     * @return 
+     * @return Reference to gameWindow object. 
      */
     public static GameWindow getGameWindow() {
         return gameWindow; 
     }
     
     /**
+     * CURRENTLY UNUSED. 
      * 
      * @return 
      */
@@ -269,6 +288,7 @@ public abstract class Engine {
     }
     
     /**
+     * CURRENTLY UNUSED. 
      * 
      * @return
      */
@@ -277,39 +297,43 @@ public abstract class Engine {
     }
     
     /**
-     * 
+     * Enum class that represents the two players. 
      */
     public enum Player {
-        PLAYER_ONE(Square.SquareState.PLAYER_ONE, "Punane"), 
-        PLAYER_TWO(Square.SquareState.PLAYER_TWO, "Sinine"); 
+        PLAYER_ONE(Square.SquareState.PLAYER_ONE, "Punane"), //esimene mängija
+        PLAYER_TWO(Square.SquareState.PLAYER_TWO, "Sinine"); //teine mängija
         
-        private Square.SquareState state; 
-        private String name; 
+        private Square.SquareState state; //mängijale vastav ruudu olek
+        private String name; //mängija "nimi"
         
         /**
-         * 
-         * @param state
-         * @param name 
+         * Constructs the Player enum. 
+         *
+         * @param state The Square.SquareState enum that corresponds to this player. 
+         * @param name Player name. 
          */
         Player(Square.SquareState state, String name) {
-            this.state = state; 
-            this.name = name; 
+            this.state = state; //määrame vastava oleku
+            this.name = name; //määrame nime
         }
         
         /**
+         * Returns the Square.SquareState enum that corresponds to this player. 
          * 
-         * @return 
+         * @return Corresponding Square.SquareState object. 
          */
         public Square.SquareState getCorrespondingSquareState() {
-            return this.state; 
+            return this.state;
         }
         
         /**
+         * Returns the String representation of this enum. 
          * 
-         * @return 
+         * @return String representation of this enum. 
          */
+        @Override 
         public String toString() {
-            return this.name; 
+            return this.name; //hetkel tagastame "nime".. 
         }
        
     }
