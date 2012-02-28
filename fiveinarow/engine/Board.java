@@ -13,8 +13,9 @@ public class Board {
      */
     Board() {
         //TODO - check et boardsize pole negatiivne
-        squaresGrid = new Square[Configuration.BOARDSIZE][Configuration.BOARDSIZE];
-        setUpGrids(); 
+        //loome kahemõõtmelise ruutude (Square objektid) massiivi: 
+        squaresGrid = new Square[Configuration.BOARDSIZE][Configuration.BOARDSIZE];        
+        setUpGrids(); //anname ruutudele algväärtused:         
     }
     
     /**
@@ -22,6 +23,7 @@ public class Board {
      */
     
     private void setUpGrids() {    
+        //kasutame nested for loope ruutude loomiseks ja algväärtustamiseks 
         //x-telg..
         for (int i = 0; i < Configuration.BOARDSIZE; i++) {
             //y-telg..
@@ -41,9 +43,10 @@ public class Board {
      */
     
     public Square getSquareAt(int xcoord, int ycoord) {
-        //TODO - check - et pole arrayexception ehk koordinaadid klapiks
+        //TODO - check - et pole arrayexception ehk koordinaadid klapiks        
         //kas handlida seda siin meetodis või väljaspool? 
-        return squaresGrid[xcoord][ycoord];
+                
+        return squaresGrid[xcoord][ycoord]; //tagastame nende koordinaatidega ruudu
     }
 
 }
