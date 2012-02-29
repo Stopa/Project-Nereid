@@ -2,7 +2,10 @@ package fiveinarow.gui;
 
 import javax.swing.JFrame; 
 import javax.swing.JLabel;
-import javax.swing.JButton; 
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
 
 import fiveinarow.Configuration; 
 import java.awt.Color;
@@ -16,6 +19,8 @@ public class GameWindow extends JFrame {
     //private JLabel playerOneWinsLabel;
     //private JLabel playerTwoWinsLabel; 
     private JLabel statusLabel; 
+    
+    private JButton readme;
     
     //private JButton newGameButton; 
     
@@ -60,6 +65,25 @@ public class GameWindow extends JFrame {
         statusLabel.setForeground(Configuration.STATUSLABEL_COLOR); 
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 50)); //TODO - võlunumber, võta ära!
         this.add(statusLabel); 
+        
+        this.readme = new JButton ("Loe mind");
+        readme.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(
+                null,
+                "Five in a row on mäng, kus osalejad peavad "
+              + "kordamööda värvima ruute.\n"
+              + "Kes enne 5 järjestikust ruutu oma värviga värvitud "
+              + "saab on võitja.\nNii lihtne see ongi.",
+                "Loe mind",
+                JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        
+        readme.setSize(Configuration.READ_ME_SIZE_X,Configuration.READ_ME_SIZE_Y);
+        readme.setLocation(Configuration.READ_ME_POSX,Configuration.READ_ME_POSY);
+        this.add(readme);
         
                         
         
