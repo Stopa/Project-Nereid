@@ -20,7 +20,7 @@ public class GameWindow extends JFrame {
     //private JLabel playerTwoWinsLabel; 
     private JLabel statusLabel; 
     
-    private JButton readme;
+    private JButton readmeButton;
     
     //private JButton newGameButton; 
     
@@ -66,24 +66,21 @@ public class GameWindow extends JFrame {
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 50)); //TODO - võlunumber, võta ära!
         this.add(statusLabel); 
         
-        this.readme = new JButton ("Loe mind");
-        readme.addActionListener(new ActionListener(){
+        this.readmeButton = new JButton ("Loe mind");
+        readmeButton.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 JOptionPane.showMessageDialog(
                 null,
-                "Five in a row on mäng, kus osalejad peavad "
-              + "kordamööda värvima ruute.\n"
-              + "Kes enne 5 järjestikust ruutu oma värviga värvitud "
-              + "saab on võitja.\nNii lihtne see ongi.",
+                Configuration.READ_ME_CONTENT,
                 "Loe mind",
                 JOptionPane.INFORMATION_MESSAGE);
             }
         });
         
-        readme.setSize(Configuration.READ_ME_SIZE_X,Configuration.READ_ME_SIZE_Y);
-        readme.setLocation(Configuration.READ_ME_POSX,Configuration.READ_ME_POSY);
-        this.add(readme);
+        readmeButton.setSize(Configuration.READ_ME_SIZE_X,Configuration.READ_ME_SIZE_Y);
+        readmeButton.setLocation(Configuration.READ_ME_POSX,Configuration.READ_ME_POSY);
+        this.add(readmeButton);
         
                         
         
