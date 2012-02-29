@@ -22,6 +22,15 @@ public abstract class Configuration {
     public static final int STATUSLABEL_POSY = 680; //staatusteksti y-telje positsioon
     public static final Color STATUSLABEL_COLOR = Color.GREEN; //staatusteksti värv
     
+    public static final int READ_ME_POSX = 550;
+    public static final int READ_ME_POSY = 25;
+    public static final int READ_ME_SIZE_X = 100;
+    public static final int READ_ME_SIZE_Y = 25;
+    public static final String READ_ME_CONTENT = "Five in a row on mäng, kus osalejad peavad "
+                                               + "kordamööda värvima ruute.\n"
+                                               + "Kes enne 5 järjestikust ruutu oma värviga värvitud "
+                                               + "saab on võitja.\nNii lihtne see ongi.";
+    
     public static final Color PLAYER_ONE_COLOR = Color.RED; //esimese mängija värv
     public static final Color PLAYER_TWO_COLOR = Color.BLUE; //teise mängija värv
     public static final Color UNSELECTED_COLOR = Color.WHITE; //valimata ruudu värv
