@@ -31,7 +31,7 @@ public abstract class Engine {
         
         //kui pole ühe mängija võit aktiivne, siis pushitakse uus staatus
         if (!activeWin)
-        gameWindow.updateStatusLabel(currentPlayer.toString() + " käik!");
+        gameWindow.updateStatusLabel(currentPlayer.getMoveString() + " käik!");
         
     }
     
@@ -186,7 +186,7 @@ public abstract class Engine {
         //kontrollime, kas see käik lõpetas mängu
         if (checkWin(square)) {
             //uuendame staatusteksti
-            gameWindow.updateStatusLabel(currentPlayer.toString() + " võit!");            
+            gameWindow.updateStatusLabel(currentPlayer.getWinString() + " võit!");            
             activeWin = true; //määrame muutujasse, et aktiivne mäng on läbi 
         }
     }
@@ -238,7 +238,7 @@ public abstract class Engine {
         //loome uue graafilise mänguakna
         setUpGameWindow(); 
         //paneme staatustekstiks praeguse mängija käigu
-        gameWindow.updateStatusLabel(currentPlayer.toString() + " käik!");        
+        gameWindow.updateStatusLabel(currentPlayer.getMoveString() + " käik!");        
     }   
     
     /**
@@ -300,9 +300,11 @@ public abstract class Engine {
      * Enum class that represents the two players. 
      */
     public enum Player {
-        PLAYER_ONE(Square.SquareState.PLAYER_ONE, "Punane"), //esimene mängija
-        PLAYER_TWO(Square.SquareState.PLAYER_TWO, "Sinine"); //teine mängija
+        PLAYER_ONE(Square.SquareState.PLAYER_ONE, "Punane", "Punase"), //esimene mängija
+        PLAYER_TWO(Square.SquareState.PLAYER_TWO, "Sinine", "Sinise"); //teine mängija
         
+        private String moveString;
+        private String winString;
         private Square.SquareState state; //mängijale vastav ruudu olek
         private String name; //mängija "nimi"
         
@@ -312,9 +314,11 @@ public abstract class Engine {
          * @param state The Square.SquareState enum that corresponds to this player. 
          * @param name Player name. 
          */
-        Player(Square.SquareState state, String name) {
+        Player(Square.SquareState state, String name, String genitive) {
             this.state = state; //määrame vastava oleku
-            this.name = name; //määrame nime
+            this.name = name;
+            this.moveString = genitive;
+            this.winString = genitive;//määrame nime
         }
         
         /**
@@ -335,7 +339,14 @@ public abstract class Engine {
         public String toString() {
             return this.name; //hetkel tagastame "nime".. 
         }
-       
+        
+        public String getMoveString() {
+            return this.moveString;
+        }
+        
+        public String getWinString() {
+            return this.winString;
+        }
     }
 
 }
