@@ -303,8 +303,8 @@ public abstract class Engine {
         PLAYER_ONE(Square.SquareState.PLAYER_ONE, "Punane", "Punase"), //esimene mängija
         PLAYER_TWO(Square.SquareState.PLAYER_TWO, "Sinine", "Sinise"); //teine mängija
         
-        private String moveString;
-        private String winString;
+        private String moveString; // käigu värv
+        private String winString; // võidu värv
         private Square.SquareState state; //mängijale vastav ruudu olek
         private String name; //mängija "nimi"
         
@@ -316,9 +316,9 @@ public abstract class Engine {
          */
         Player(Square.SquareState state, String name, String genitive) {
             this.state = state; //määrame vastava oleku
-            this.name = name;
-            this.moveString = genitive;
-            this.winString = genitive;//määrame nime
+            this.name = name; //määrame nime
+            this.moveString = genitive; // lisame käigu värvi omastavas käändes
+            this.winString = genitive; // võitja värv...
         }
         
         /**
@@ -341,11 +341,11 @@ public abstract class Engine {
         }
         
         public String getMoveString() {
-            return this.moveString;
+            return this.moveString; // tagastame käigu värvi
         }
         
         public String getWinString() {
-            return this.winString;
+            return this.winString; // tagastame võitja värvi
         }
     }
 
