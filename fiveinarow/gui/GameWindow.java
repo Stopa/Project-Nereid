@@ -2,10 +2,6 @@ package fiveinarow.gui;
 
 import javax.swing.JFrame; 
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JOptionPane;
 
 import fiveinarow.Configuration; 
 import java.awt.Color;
@@ -19,8 +15,6 @@ public class GameWindow extends JFrame {
     //private JLabel playerOneWinsLabel;
     //private JLabel playerTwoWinsLabel; 
     private JLabel statusLabel; 
-    
-    private JButton readmeButton;
     
     //private JButton newGameButton; 
     
@@ -62,7 +56,6 @@ public class GameWindow extends JFrame {
                               Configuration.STATUSLABEL_POSY,
                               Configuration.STATUSLABEL_WIDTH,
                               Configuration.STATUSLABEL_HEIGHT);        
-        statusLabel.setForeground(Configuration.STATUSLABEL_COLOR); 
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 50)); //TODO - võlunumber, võta ära!
         this.add(statusLabel);                 
         
@@ -89,7 +82,8 @@ public class GameWindow extends JFrame {
      * 
      * @param text 
      */
-    public final void updateStatusLabel(String text) {
+    public final void updateStatusLabel(Color color, String text) {
+        statusLabel.setForeground(color);         
         statusLabel.setText(text); 
     }
     

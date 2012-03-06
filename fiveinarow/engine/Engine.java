@@ -2,7 +2,6 @@ package fiveinarow.engine;
 
 import javax.swing.JOptionPane;
 
-import fiveinarow.Configuration;
 import fiveinarow.gui.GameWindow; 
 import fiveinarow.gui.SettingsWindow;
 import fiveinarow.gui.TitleWindow;
@@ -40,7 +39,7 @@ public abstract class Engine {
         
         //kui pole ühe mängija võit aktiivne, siis pushitakse uus staatus
         if (!activeWin)
-        gameWindow.updateStatusLabel(currentPlayer + " käib!");
+        gameWindow.updateStatusLabel(currentPlayer.getCorrespondingSquareState().getColor(), currentPlayer + " käib!");
         
     }
     
@@ -128,7 +127,7 @@ public abstract class Engine {
         
         gameWindow.setEnabled(false); //protsessimise ajaks disableb mänguakna
         
-        Square square = board.getSquareAt(xcoord, ycoord); //leiab viite loogilisele ruudule
+        Square square = board.getSquareAt(xcoord, ycoord); //leiab viite loogilisele ruudule                
         
         if (checkMove(square)) { //kui saab võtta seda ruutu üldse
             takeSquare(square); //praegune mängija võtab ruudu
@@ -153,6 +152,7 @@ public abstract class Engine {
     private static boolean checkMove(Square square) {
         
         if (totalMoves == 0) return true;  //kui esimene käik, võib igale poole käia
+        if (square.getState() != Square.SquareState.UNSELECTED) return false; 
                         
         //ülejäänut (hetkel) ignoreeritakse. 
         /*
@@ -194,8 +194,8 @@ public abstract class Engine {
         
         //kontrollime, kas see käik lõpetas mängu
         if (checkWin(square)) {
-            //uuendame staatusteksti
-            gameWindow.updateStatusLabel(currentPlayer + " võitis!");            
+            //uuendame staatusteksti            
+            gameWindow.updateStatusLabel(currentPlayer.getCorrespondingSquareState().getColor(), currentPlayer + " võitis!");            
             activeWin = true; //määrame muutujasse, et aktiivne mäng on läbi 
         }
     }
@@ -300,7 +300,8 @@ public abstract class Engine {
         //loome uue graafilise mänguakna
         setUpGameWindow(); 
         //paneme staatustekstiks praeguse mängija käigu
-        gameWindow.updateStatusLabel(currentPlayer + " käib!");        
+               
+        gameWindow.updateStatusLabel(currentPlayer.getCorrespondingSquareState().getColor(), currentPlayer + " käib!");        
     }   
     
     /**

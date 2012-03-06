@@ -22,7 +22,6 @@ public abstract class Configuration {
     public static final int STATUSLABEL_WIDTH = 400; //staatusteksti laius
     public static final int STATUSLABEL_POSX = 200; //staatusteksti x-telje positsioon
     public static final int STATUSLABEL_POSY = 680; //staatusteksti y-telje positsioon
-    public static final Color STATUSLABEL_COLOR = Color.GREEN; //staatusteksti värv
     
     public static final int READ_ME_POSX = 550;
     public static final int READ_ME_POSY = 25;

@@ -3,7 +3,6 @@ package fiveinarow.gui;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
-import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -29,6 +28,7 @@ public class SettingsWindow extends JFrame {
 		this.setupButtons();
 		
 		addWindowListener(new WindowAdapter() { // sulgemisel teeme peaakna aktiivseks
+                        @Override
 			public void windowClosing(WindowEvent e) {
 				Engine.settingsClosed();
 			}
