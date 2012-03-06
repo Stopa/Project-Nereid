@@ -64,25 +64,7 @@ public class GameWindow extends JFrame {
                               Configuration.STATUSLABEL_HEIGHT);        
         statusLabel.setForeground(Configuration.STATUSLABEL_COLOR); 
         statusLabel.setFont(new Font("SansSerif", Font.BOLD, 50)); //TODO - võlunumber, võta ära!
-        this.add(statusLabel); 
-        
-        this.readmeButton = new JButton ("Loe mind");
-        readmeButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                null,
-                Configuration.READ_ME_CONTENT,
-                "Loe mind",
-                JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-        
-        readmeButton.setSize(Configuration.READ_ME_SIZE_X,Configuration.READ_ME_SIZE_Y);
-        readmeButton.setLocation(Configuration.READ_ME_POSX,Configuration.READ_ME_POSY);
-        this.add(readmeButton);
-        
-                        
+        this.add(statusLabel);                 
         
         this.setTitle("Five in a row!"); 
 

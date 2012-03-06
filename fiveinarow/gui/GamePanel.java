@@ -16,8 +16,8 @@ public class GamePanel extends JPanel {
         //määrame layoutiks gridlayouti
         //anname sellele x-telge ja y-telge pidi ruutude arvu
         //ning ruutudevahelise vahe pikslites (0) 
-        this.setLayout(new GridLayout(Configuration.BOARDSIZE, 
-                                      Configuration.BOARDSIZE, 
+        this.setLayout(new GridLayout(Configuration.BOARDSIZE.getSize(), 
+                                      Configuration.BOARDSIZE.getSize(), 
                                       0, 
                                       0));                
     }
@@ -28,11 +28,11 @@ public class GamePanel extends JPanel {
     void setUpGridButtons() {
         
         //initsialiseerime graafiliste mängunuppude kahemõõtmelise massiivi
-        gridButtons = new GridButton[Configuration.BOARDSIZE][Configuration.BOARDSIZE]; 
+        gridButtons = new GridButton[Configuration.BOARDSIZE.getSize()][Configuration.BOARDSIZE.getSize()]; 
         
         //ja anname selle igale elemendile kahe for loopi abil uue objekti väärtuseks
-        for (int i = 0; i < Configuration.BOARDSIZE; i++) {
-            for (int j = 0; j < Configuration.BOARDSIZE; j++) {
+        for (int i = 0; i < Configuration.BOARDSIZE.getSize(); i++) {
+            for (int j = 0; j < Configuration.BOARDSIZE.getSize(); j++) {
                 GridButton tmp = new GridButton(i, j); //loome uue objekti
                 gridButtons[i][j] = tmp; //paneme selle massiivi
                 this.add(tmp); //ja lisame ka gamepanel paneelile, et oleks näha

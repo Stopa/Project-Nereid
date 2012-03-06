@@ -72,11 +72,11 @@ public class Square {
      * Enum class representing Square's owner/state. 
      */
     public enum SquareState {
-        PLAYER_ONE(Configuration.PLAYER_ONE_COLOR), //esimene mängija
-        PLAYER_TWO(Configuration.PLAYER_TWO_COLOR), //teine mängija
+        PLAYER_ONE(Configuration.PLAYER_ONE_COLOR.getColor()), //esimene mängija
+        PLAYER_TWO(Configuration.PLAYER_TWO_COLOR.getColor()), //teine mängija
         UNSELECTED(Configuration.UNSELECTED_COLOR); //valimata (algväärtus)
         
-        private final Color color; //graafikas kasutatud värv selle olekuga ruutude jaoks
+        private Color color; //graafikas kasutatud värv selle olekuga ruutude jaoks
         
         /**
          * SquareState constructor. 
@@ -92,6 +92,14 @@ public class Square {
          */
         public Color getColor() {
             return this.color; 
+        }
+        
+        /**
+         * Paneb enumi väärtuseks uue värvi - kasutusel sätete aknas
+         * @param newColor
+         */
+        public void setColor(Color newColor) {
+        	this.color = newColor;
         }
     }
 

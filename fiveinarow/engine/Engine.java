@@ -1,6 +1,12 @@
 package fiveinarow.engine;
 
+import javax.swing.JOptionPane;
+
+import fiveinarow.Configuration;
 import fiveinarow.gui.GameWindow; 
+import fiveinarow.gui.SettingsWindow;
+import fiveinarow.gui.TitleWindow;
+import fiveinarow.Configuration;
 
 public abstract class Engine {
     
@@ -12,6 +18,9 @@ public abstract class Engine {
     
     private static Board board; //board objekt - loogiline mängulaud
     private static GameWindow gameWindow; //mänguaken ehk graafiline mängulaud
+    
+    private static TitleWindow titleWindow; // mängu alustamise aken
+    private static SettingsWindow settingsWindow; // sätete aken
     
     private static Player currentPlayer; //mängija, kelle käik parasjagu on
     
@@ -31,7 +40,7 @@ public abstract class Engine {
         
         //kui pole ühe mängija võit aktiivne, siis pushitakse uus staatus
         if (!activeWin)
-        gameWindow.updateStatusLabel(currentPlayer.getMoveString() + " käik!");
+        gameWindow.updateStatusLabel(currentPlayer + " käib!");
         
     }
     
@@ -186,7 +195,7 @@ public abstract class Engine {
         //kontrollime, kas see käik lõpetas mängu
         if (checkWin(square)) {
             //uuendame staatusteksti
-            gameWindow.updateStatusLabel(currentPlayer.getWinString() + " võit!");            
+            gameWindow.updateStatusLabel(currentPlayer + " võitis!");            
             activeWin = true; //määrame muutujasse, et aktiivne mäng on läbi 
         }
     }
@@ -213,8 +222,56 @@ public abstract class Engine {
      * Sets up graphical game window. 
      */
     private static void setUpGameWindow() {
-        gameWindow = new GameWindow(); //loome uue graafilise mängulaua 
-        gameWindow.setVisible(true); //paneme selle nähtavaks 
+        gameWindow = new GameWindow(); //loome uue graafilise mängulaua
+        gameWindow.setVisible(true); //paneme selle nähtavaks
+    }
+    
+    /**
+     * Displays title window
+     */
+    
+    public static void showTitle() {
+    	titleWindow = new TitleWindow();
+    	titleWindow.setVisible(true);
+    }
+    
+    public static void showSettingsWindow() {
+    	titleWindow.setEnabled(false);
+    	settingsWindow = new SettingsWindow();
+		settingsWindow.setVisible(true);
+    }
+    
+    /**
+     * salvestame uued sätted Config klassi ja paneme akna kinni
+     */
+    public static void saveSettings() {
+    	String p1Color = settingsWindow.getP1Color();
+    	String p2Color = settingsWindow.getP2Color();
+    	String gameSize = settingsWindow.getGameSize();
+    	
+    	if(p1Color.equals(p2Color)) {
+    		JOptionPane.showMessageDialog(
+                    null,
+                    "Mängijad ei tohi olla sama värvi",
+                    "Viga",
+                    JOptionPane.ERROR_MESSAGE);
+    	} else {
+    		Configuration.setP1Color(p1Color);
+    		Configuration.setP2Color(p2Color);
+    		Configuration.setGameSize(gameSize);
+    		closeSettings();
+    	}
+    }
+    
+    public static void closeSettings() {
+    	titleWindow.setEnabled(true);
+    	settingsWindow.setVisible(false);
+    	settingsWindow.dispose();
+    	settingsWindow = null;
+    }
+    
+    public static void settingsClosed() {
+    	titleWindow.setEnabled(true);
     }
     
     /**
@@ -222,15 +279,20 @@ public abstract class Engine {
      */
     
     public static void startNewGame() {   
+    	if (titleWindow != null) {
+    		titleWindow.setVisible(false);
+    		titleWindow.dispose();
+    		titleWindow = null;
+    	}
         if (gameWindow != null) { //kui mänguaken eksisteerib        
-        gameWindow.setVisible(false); //teeme selle protsessimise ajaks nähtamatuks
-        gameWindow.dispose(); //kutsume välja dispose() meetodi, mis akna hävitab
-        gameWindow = null; //paneme mänguakna nulliks, et GC selle ära koristaks
+	        gameWindow.setVisible(false); //teeme selle protsessimise ajaks nähtamatuks
+	        gameWindow.dispose(); //kutsume välja dispose() meetodi, mis akna hävitab
+	        gameWindow = null; //paneme mänguakna nulliks, et GC selle ära koristaks
         }
         
         if (board != null) { //kui loogiline mängulaud eksisteerib        
-        board = null; //paneme selle nulli, et GC selle ära koristaks 
-        //TODO - kontrollida, et mäluleket poleks? 
+	        board = null; //paneme selle nulli, et GC selle ära koristaks 
+	        //TODO - kontrollida, et mäluleket poleks? 
         }
         
         //loome uue loogilise mängulaua
@@ -238,7 +300,7 @@ public abstract class Engine {
         //loome uue graafilise mänguakna
         setUpGameWindow(); 
         //paneme staatustekstiks praeguse mängija käigu
-        gameWindow.updateStatusLabel(currentPlayer.getMoveString() + " käik!");        
+        gameWindow.updateStatusLabel(currentPlayer + " käib!");        
     }   
     
     /**
@@ -300,11 +362,9 @@ public abstract class Engine {
      * Enum class that represents the two players. 
      */
     public enum Player {
-        PLAYER_ONE(Square.SquareState.PLAYER_ONE, "Punane", "Punase"), //esimene mängija
-        PLAYER_TWO(Square.SquareState.PLAYER_TWO, "Sinine", "Sinise"); //teine mängija
+        PLAYER_ONE(Square.SquareState.PLAYER_ONE, "Esimene"), //esimene mängija
+        PLAYER_TWO(Square.SquareState.PLAYER_TWO, "Teine"); //teine mängija
         
-        private String moveString; // käigu värv
-        private String winString; // võidu värv
         private Square.SquareState state; //mängijale vastav ruudu olek
         private String name; //mängija "nimi"
         
@@ -314,11 +374,9 @@ public abstract class Engine {
          * @param state The Square.SquareState enum that corresponds to this player. 
          * @param name Player name. 
          */
-        Player(Square.SquareState state, String name, String genitive) {
+        Player(Square.SquareState state, String name) {
             this.state = state; //määrame vastava oleku
             this.name = name; //määrame nime
-            this.moveString = genitive; // lisame käigu värvi omastavas käändes
-            this.winString = genitive; // võitja värv...
         }
         
         /**
@@ -338,14 +396,6 @@ public abstract class Engine {
         @Override 
         public String toString() {
             return this.name; //hetkel tagastame "nime".. 
-        }
-        
-        public String getMoveString() {
-            return this.moveString; // tagastame käigu värvi
-        }
-        
-        public String getWinString() {
-            return this.winString; // tagastame võitja värvi
         }
     }
 

@@ -14,7 +14,7 @@ public class Board {
     Board() {
         //TODO - check et boardsize pole negatiivne
         //loome kahemõõtmelise ruutude (Square objektid) massiivi: 
-        squaresGrid = new Square[Configuration.BOARDSIZE][Configuration.BOARDSIZE];        
+        squaresGrid = new Square[Configuration.BOARDSIZE.getSize()][Configuration.BOARDSIZE.getSize()];        
         setUpGrids(); //anname ruutudele algväärtused:         
     }
     
@@ -25,9 +25,9 @@ public class Board {
     private void setUpGrids() {    
         //kasutame nested for loope ruutude loomiseks ja algväärtustamiseks 
         //x-telg..
-        for (int i = 0; i < Configuration.BOARDSIZE; i++) {
+        for (int i = 0; i < Configuration.BOARDSIZE.getSize(); i++) {
             //y-telg..
-            for (int j = 0; j < Configuration.BOARDSIZE; j++) {
+            for (int j = 0; j < Configuration.BOARDSIZE.getSize(); j++) {
                 //loob uue Square objekti, x=i, y=j, board=this
                 squaresGrid[i][j] = new Square(i, j, this);
             }

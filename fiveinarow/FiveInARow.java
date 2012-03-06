@@ -11,7 +11,7 @@ public class FiveInARow {
      */
     public static void main(String[] args) {
         Engine.init(); //seame üles Engine muutujad jmt
-        Engine.startNewGame();  //alustame uut mängu (s.h. graafika) 
+    	Engine.showTitle(); //näitame algusekraani
     }
 
 }
